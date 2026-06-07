@@ -11,6 +11,8 @@
 .project
 .factorypath
 .settings/
+
+# Build outputs
 target
 
 # OS
