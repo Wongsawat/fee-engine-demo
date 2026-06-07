@@ -1,6 +1,14 @@
--- Seed fee rules for the demo. Inserted once when Flyway runs V8.
--- Uses ON CONFLICT (id) DO NOTHING to be idempotent in case the migration
--- is re-applied via a clean re-run.
+-- DOCUMENTATION ONLY — this file is NOT executed by the demo compose stack.
+-- The active seed mechanism is the db-seeder service (see docker-compose.yml),
+-- which runs infra/postgres/seed.sql (TRUNCATE + INSERT) after fee-engine is healthy.
+--
+-- This file documents what a permanent V8 Flyway migration would look like if
+-- the seed data were to be incorporated into the fee-engine source repo's migration
+-- chain instead of a separate seeder container.
+--
+-- NOTE: ON CONFLICT DO NOTHING without a conflict target would fail against the
+-- partial unique index uniq_active_fee_rules (V7). To use this as a real migration,
+-- replace with TRUNCATE fee_rules CASCADE; followed by plain INSERT statements.
 
 INSERT INTO fee_rules (
     id, payment_type, scheme, charge_bearer, account_identification,
