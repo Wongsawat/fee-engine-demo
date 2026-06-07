@@ -14,6 +14,7 @@
 
 # Build outputs
 target
+*.jar
 
 # OS
 .DS_Store
