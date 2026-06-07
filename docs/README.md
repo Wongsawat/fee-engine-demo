@@ -29,7 +29,7 @@ docker compose up --build
 
 Open **http://localhost:8888** — login with `demo` / `demo`.
 
-> **Note on port 8888:** `refresh-artifacts.sh` bakes `VITE_KEYCLOAK_URL=http://localhost:8888`
+> **Note on port 8888:** `refresh-artifacts.sh` bakes `VITE_KEYCLOAK_URL=http://localhost:8888/auth`
 > into the admin-ui build at compile time. If you change the exposed port, update that variable
 > in the script and rebuild before running `docker compose up --build`.
 

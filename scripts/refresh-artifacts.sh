@@ -25,7 +25,7 @@ echo "  -> services/ai-assistant/fee-engine-ai-assistant.jar"
 
 echo "Building admin-ui dist..."
 cd "$DEMO_DIR/../fee-engine-admin-ui"
-VITE_KEYCLOAK_URL=http://localhost:8888 \
+VITE_KEYCLOAK_URL=http://localhost:8888/auth \
 VITE_KEYCLOAK_REALM=pisp \
 VITE_KEYCLOAK_CLIENT_ID=fee-engine-admin-ui \
 npm run build
