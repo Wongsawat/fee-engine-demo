@@ -53,11 +53,9 @@
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": true,
-      /* true required for ROPC grant_type=password in Task 8 Step 7 smoke test.
-         Widened attack surface is acceptable for localhost-only demo — see README security note. */
       "serviceAccountsEnabled": false,
-      "redirectUris": ["http://localhost/*"],
-      "webOrigins": ["http://localhost"],
+      "redirectUris": ["http://localhost:8888/*"],
+      "webOrigins": ["http://localhost:8888"],
       "attributes": {
         "pkce.code.challenge.method": "S256"
       },
