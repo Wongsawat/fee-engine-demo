@@ -29,10 +29,9 @@ docker compose up --build
 
 Open **http://localhost:8888** — login with `demo` / `demo`.
 
-> **Note on port 8888:** `refresh-artifacts.sh` currently bakes
-> `VITE_KEYCLOAK_URL=http://localhost` into the admin-ui build. If you change
-> the exposed port (or move the demo off `localhost`), edit the script before
-> rebuilding so the SPA points at the right issuer.
+> **Note on port 8888:** `refresh-artifacts.sh` bakes `VITE_KEYCLOAK_URL=http://localhost:8888`
+> into the admin-ui build at compile time. If you change the exposed port, update that variable
+> in the script and rebuild before running `docker compose up --build`.
 
 ## Day-to-day commands
 
@@ -72,13 +71,20 @@ internet-accessible environment.
 
 ## Seed data
 
-The `fee_engine` database is seeded with 5 demo rules on first boot by a
-`db-seeder` one-shot service that runs `psql -f /seed.sql` after fee-engine
-becomes healthy. A V8 Flyway migration
-(`infra/postgres/migrations/V8__seed_fee_rules.sql`) carries the same seed
-data for the source repo's Flyway chain. On every fee-engine restart, the
-`db-seeder` re-runs `TRUNCATE fee_rules CASCADE;` followed by the inserts,
-so any user-created rules are wiped — this is expected for a demo.
+The `fee_engine` database is seeded by a `db-seeder` one-shot service that runs
+`psql -f seed.sql` (TRUNCATE + INSERT 5 rules) after fee-engine becomes healthy.
+The seeder runs on each `docker compose up` — any rules created during a demo
+session are wiped on the next startup. Use `docker compose down -v && docker compose up`
+for a guaranteed clean slate.
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `fee-engine` restarting in a loop | DB or Keycloak not yet healthy | Wait; `docker compose logs fee-engine` for details |
+| `db-seeder` exits non-zero | Wrong `POSTGRES_PASSWORD` or DB not ready | Check `.env`, run `docker compose logs db-seeder` |
+| Login redirects to wrong port | SPA baked with wrong Keycloak URL | Run `./scripts/refresh-artifacts.sh` then `docker compose up --build` |
+| `keycloak` stuck unhealthy | Realm import slow on first boot | Increase `start_period` in compose or wait; check `docker compose logs keycloak` |
 
 ## Why JARs and dist/ are committed to this repo
 
