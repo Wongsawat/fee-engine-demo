@@ -72,10 +72,21 @@ internet-accessible environment.
 ## Seed data
 
 The `fee_engine` database is seeded by a `db-seeder` one-shot service that runs
-`psql -f seed.sql` (TRUNCATE + INSERT 5 rules) after fee-engine becomes healthy.
+`psql -f seed.sql` (TRUNCATE + INSERT 6 rules) after fee-engine becomes healthy.
 The seeder runs on each `docker compose up` — any rules created during a demo
 session are wiped on the next startup. Use `docker compose down -v && docker compose up`
 for a guaranteed clean slate.
+
+### Seed rules
+
+| # | Payment type | Scheme | Currency | Fee type | Notes |
+|---|---|---|---|---|---|
+| 1 | DOMESTIC | FPS | GBP | FLAT | £0.25 flat |
+| 2 | INTERNATIONAL | SWIFT | GBP | PERCENTAGE | 1.5%, capped £0.50–£25 |
+| 3 | DOMESTIC | CHAPS | GBP | TIERED_SLAB | Fixed-amount slab tiers |
+| 4 | INTERNATIONAL | SWIFT | EUR | FREE | Zero-fee EU transfers |
+| 5 | DOMESTIC | BACS | GBP | FLAT | £2.00, high-priority |
+| 6 | INTERNATIONAL | SWIFT | USD | TIERED_STEP | Progressive %: 3%/2%/1% per bracket |
 
 ## Troubleshooting
 
