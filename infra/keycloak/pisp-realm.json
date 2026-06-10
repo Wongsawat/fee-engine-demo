@@ -1,6 +1,7 @@
 {
   "id": "pisp",
   "realm": "pisp",
+  "displayName": "Fee Engine Demo",
   "enabled": true,
   "sslRequired": "none",
   "registrationAllowed": false,
